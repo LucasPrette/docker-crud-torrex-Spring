@@ -25,7 +25,7 @@ public final class DatabaseRepository {
 
     }
 
-    public Connection createConnection() throws NoSuchAlgorithmException {
+    private Connection createConnection() throws NoSuchAlgorithmException {
 
         System.out.println("Creating SQL Server Database Connection");
         Connection connection = null;

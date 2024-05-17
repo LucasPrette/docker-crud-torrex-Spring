@@ -10,11 +10,10 @@ import java.security.NoSuchAlgorithmException;
 public class DockerCrudTorrexSpringApplication {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
-//        SpringApplication.run(DockerCrudTorrexSpringApplication.class, args);
+        SpringApplication.run(DockerCrudTorrexSpringApplication.class, args);
 
-        DatabaseRepository databaseRepository = DatabaseRepository.getInstance();
+//        DatabaseRepository databaseRepository = DatabaseRepository.getInstance();
 
-        databaseRepository.createConnection();
 
 
     }
