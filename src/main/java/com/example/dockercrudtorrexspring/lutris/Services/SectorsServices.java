@@ -8,7 +8,6 @@ public class SectorsServices {
 
     void create(Sector sector) {
 
-
     }
 
     public ArrayList<Sector> getAll() {

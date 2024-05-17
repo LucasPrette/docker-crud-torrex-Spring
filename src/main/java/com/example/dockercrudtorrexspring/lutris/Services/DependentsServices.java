@@ -2,6 +2,7 @@ package com.example.dockercrudtorrexspring.lutris.Services;
 
 import com.example.dockercrudtorrexspring.lutris.Entities.Dependent;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class DependentsServices {

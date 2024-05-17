@@ -14,13 +14,13 @@ public class DependentsController {
     }
 
     @ResponseBody
-    void findOnd() {
+    void findOne() {
         // pegar "id" como parametro na url
     }
 
     @ResponseBody
     void create() {
-        // pegar todos os campos do body da resuisicao (JSON)
+        // pegar todos os campos do body da resquisicao (JSON)
     }
 
     @ResponseBody

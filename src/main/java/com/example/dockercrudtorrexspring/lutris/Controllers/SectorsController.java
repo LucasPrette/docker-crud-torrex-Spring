@@ -14,7 +14,7 @@ public class SectorsController {
     }
 
     @ResponseBody
-    void findOnd() {
+    void findOne() {
         // pegar "id" como parametro na url
     }
 
