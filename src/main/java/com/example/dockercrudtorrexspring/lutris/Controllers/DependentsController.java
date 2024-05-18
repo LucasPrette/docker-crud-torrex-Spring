@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dependents")
@@ -18,9 +19,11 @@ import java.util.Optional;
         this.dependentsServices = new DependentsServices();
     }
 
-    @ResponseBody
-    void getAll() {
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<Dependent>> getAll(@RequestBody Dependent dependent) {
+        ArrayList<Dependent> dependents = this.dependentsServices.getAll();
 
+        return new ResponseEntity<>(dependents, HttpStatus.OK);
     }
 
     @GetMapping(path="/{id}", produces = "application/json")
@@ -44,7 +47,7 @@ import java.util.Optional;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<> update(@PathVariable("id") int id, @RequestBody Dependent dependent) {
+    public ResponseEntity<Dependent> update(@PathVariable("id") int id, @RequestBody Dependent dependent) {
         var updateDependent = this.dependentsServices.findOne(id);
 
         if(updateDependent != null) {
@@ -53,17 +56,14 @@ import java.util.Optional;
             updateDependent.setIdEmployee(updateDependent.getIdEmployee());
 
             dependentsServices.update(updateDependent);
-            
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.notFound().build();
-
-        // pegar "ID" como parametro na url
-        // pegar os campos do body da requisicao (JSON)
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<> delete(@PathVariable("id") int id) {
+    public ResponseEntity<Dependent> delete(@PathVariable("id") int id) {
         Dependent existingDependent = this.dependentsServices.findOne(id);
 
         if(existingDependent != null) {
@@ -73,8 +73,5 @@ import java.util.Optional;
         return ResponseEntity.notFound().build();
 
         //TODO find how to return no content response entity
-
-
-        // pegar "id" como parametro na URL
     }
 }
