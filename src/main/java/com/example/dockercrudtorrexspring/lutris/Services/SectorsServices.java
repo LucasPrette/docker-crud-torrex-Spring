@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 public class SectorsServices {
 
-    void create(Sector sector) {
+    public Sector create(Sector sector) {
 
+        return null;
     }
 
     public ArrayList<Sector> getAll() {
@@ -20,14 +21,14 @@ public class SectorsServices {
         return null;
     }
 
-    void update(Sector sector) {
+    public void update(Sector sector) {
 
 
     }
 
-    void delete(int id) {
+    public Sector delete(int id) {
 
-
+        return null;
     }
 
 }
