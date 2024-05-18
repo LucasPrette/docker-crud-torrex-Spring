@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public class DependentsServices {
 
-    void create(Dependent dependent) {
+    public Dependent create(Dependent dependent) {
 
+        return null;
     }
 
     public ArrayList<Dependent> getAll() {

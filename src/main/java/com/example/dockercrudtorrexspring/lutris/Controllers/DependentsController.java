@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/dependents")
  public class DependentsController {
@@ -47,7 +49,19 @@ import org.springframework.web.bind.annotation.*;
         // pegar os campos do body da requisicao (JSON)
     }
 
-    void delete() {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<> delete(@PathVariable("id") int id) {
+        Dependent existingDependent = this.dependentsServices.findOne(id);
+
+        if(existingDependent != null) {
+            this.dependentsServices.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.notFound().build();
+
+        //TODO find how to return no content response entity
+
+
         // pegar "id" como parametro na URL
     }
 }
