@@ -43,8 +43,21 @@ import java.util.Optional;
         // pegar todos os campos do body da resquisicao (JSON)
     }
 
-    @ResponseBody
-    void update() {
+    @PutMapping("/{id}")
+    public ResponseEntity<> update(@PathVariable("id") int id, @RequestBody Dependent dependent) {
+        var updateDependent = this.dependentsServices.findOne(id);
+
+        if(updateDependent != null) {
+            updateDependent.setName(updateDependent.getName());
+            updateDependent.setBirth(updateDependent.getBirth());
+            updateDependent.setIdEmployee(updateDependent.getIdEmployee());
+
+            dependentsServices.update(updateDependent);
+            
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.notFound().build();
+
         // pegar "ID" como parametro na url
         // pegar os campos do body da requisicao (JSON)
     }
