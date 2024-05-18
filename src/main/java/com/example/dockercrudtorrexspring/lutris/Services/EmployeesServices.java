@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class EmployeesServices {
 
 
-    void create(Employee employee) {
+    public Employee create(Employee employee) {
 
 
     }
@@ -22,13 +22,13 @@ public class EmployeesServices {
         return null;
     }
 
-    void update(Employee employee) {
+    public Employee update(Employee employee) {
 
-
+        return null;
     }
 
-    void delete(int id) {
+    public Employee delete(int id) {
 
-
+        return null;
     }
 }

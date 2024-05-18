@@ -2,15 +2,15 @@ package com.example.dockercrudtorrexspring.lutris.Controllers;
 
 import com.example.dockercrudtorrexspring.lutris.Entities.Unit;
 import com.example.dockercrudtorrexspring.lutris.Services.UnitsServices;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.*;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/units")
 public class UnitsController {
 
@@ -45,7 +45,7 @@ public class UnitsController {
     }
 
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<> update(@PathVariable("id") int id, @RequestBody Unit unit) {
+    public ResponseEntity<Unit> update(@PathVariable("id") int id, @RequestBody Unit unit) {
         var result = this.unitsServices.findOne(id);
 
         if(result != null) {
