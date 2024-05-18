@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class UnitsServices {
 
-    void create(Unit unit) {
+    public Unit create(Unit unit) {
 
-
+        return null;
     }
 
     public ArrayList<Unit> getAll() {
@@ -21,12 +21,13 @@ public class UnitsServices {
         return null;
     }
 
-    void update(Unit unit) {
+    public Unit update(Unit unit) {
 
-
+        return null;
     }
 
-    void delete(int id) {
+    public Unit delete(int id) {
 
+        return null;
     }
 }
