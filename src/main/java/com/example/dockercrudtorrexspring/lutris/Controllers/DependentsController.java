@@ -7,6 +7,8 @@ import org.springframework.http.*;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
 
     DependentsServices dependentsServices;
 
-    public DependentsController() {
+    public DependentsController() throws NoSuchAlgorithmException {
         this.dependentsServices = new DependentsServices();
     }
 
@@ -39,7 +41,7 @@ import java.util.List;
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Dependent> create(@RequestBody Dependent dependent) {
+    public ResponseEntity<Dependent> create(@RequestBody Dependent dependent) throws SQLException {
         var result = this.dependentsServices.create(dependent);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);

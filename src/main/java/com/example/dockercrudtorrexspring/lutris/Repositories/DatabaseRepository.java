@@ -11,6 +11,15 @@ import java.sql.DriverManager;
 public final class DatabaseRepository {
 
     private static DatabaseRepository instance;
+    private Connection connection;
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
 
     Dotenv dotenv = Dotenv.configure()
             .directory("src\\main\\resources")
@@ -20,21 +29,21 @@ public final class DatabaseRepository {
     private DatabaseRepository() throws NoSuchAlgorithmException{
 
         String ConnectionURL = dotenv.get("URL");
-
-        DatabaseRepository.instance.createConnection();
-
+        createConnection();
     }
 
     private Connection createConnection() throws NoSuchAlgorithmException {
 
-        System.out.println("Creating SQL Server Database Connection");
-        Connection connection = null;
+        System.out.println("Creating SQL Server Database Connection: ");
+        Connection connection;
         try{
             //provide java database driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String Connectionurl = dotenv.get("URL");
-            connection = DriverManager.getConnection(Connectionurl);
+            String ConnectionURL = dotenv.get("URL");
+            connection = DriverManager.getConnection(ConnectionURL);
 
+            setConnection(connection);
+            
         } catch(Exception e) {
             e.printStackTrace();
             return null;
@@ -52,10 +61,6 @@ public final class DatabaseRepository {
         }
         return instance;
     }
-
-
-
-
 
 
     //TODO ver como criar conexao com banco de dado(sqlServer)

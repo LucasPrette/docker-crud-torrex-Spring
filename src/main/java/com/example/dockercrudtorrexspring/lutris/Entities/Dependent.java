@@ -12,10 +12,10 @@ public class Dependent {
 
     public Dependent
             (
-                int id,
-                String name,
-                String birth,
-                int idEmployee
+                    int id,
+                    String name,
+                    String birth,
+                    int idEmployee
             )
     {
         this.id = id;

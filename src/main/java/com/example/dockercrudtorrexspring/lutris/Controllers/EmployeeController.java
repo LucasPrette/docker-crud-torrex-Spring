@@ -2,9 +2,9 @@ package com.example.dockercrudtorrexspring.lutris.Controllers;
 
 import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Services.EmployeesServices;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.*;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
