@@ -7,6 +7,8 @@ import org.springframework.http.*;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +18,19 @@ public class EmployeeController {
 
     EmployeesServices employeesServices;
 
-    public EmployeeController() {
+    public EmployeeController() throws NoSuchAlgorithmException {
         this.employeesServices = new EmployeesServices();
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Employee>> getAll(@RequestBody Employee employee) {
+    public ResponseEntity<List<Employee>> getAll(@RequestBody Employee employee) throws SQLException {
        ArrayList<Employee> employees = this.employeesServices.getAll();
 
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Employee> findOne(@PathVariable("id") int id) {
+    public ResponseEntity<Employee> findOne(@PathVariable("id") int id) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -37,7 +39,7 @@ public class EmployeeController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> create(@RequestBody Employee employee) throws SQLException {
         var result = this.employeesServices.create(employee);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -45,7 +47,7 @@ public class EmployeeController {
     }
 
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Employee> update(@PathVariable("id") int id, @RequestBody Employee employee) {
+    public ResponseEntity<Employee> update(@PathVariable("id") int id, @RequestBody Employee employee) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
         if(result != null) {
@@ -65,7 +67,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Employee> delete(@PathVariable("id") int id)  {
+    public ResponseEntity<Employee> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
         if(result != null) {

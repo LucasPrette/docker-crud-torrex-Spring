@@ -67,7 +67,6 @@ public class SectorsServices {
         String sql = "DELETE FROM sectors WHERE id =" + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        
     }
 
 }

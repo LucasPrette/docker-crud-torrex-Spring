@@ -7,6 +7,8 @@ import org.springframework.http.*;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +18,19 @@ public class SectorsController {
 
     SectorsServices sectorsServices;
 
-    public SectorsController() {
+    public SectorsController() throws NoSuchAlgorithmException {
         this.sectorsServices = new SectorsServices();
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Sector>> getAll() {
+    public ResponseEntity<List<Sector>> getAll() throws SQLException {
         ArrayList<Sector> sectors = this.sectorsServices.getAll();
 
         return new ResponseEntity<>(sectors, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Sector> findOne(@PathVariable("id") int id) {
+    public ResponseEntity<Sector> findOne(@PathVariable("id") int id) throws SQLException {
         var result = this.sectorsServices.findOne(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -37,7 +39,7 @@ public class SectorsController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Sector> create(@RequestBody Sector sector) {
+    public ResponseEntity<Sector> create(@RequestBody Sector sector) throws SQLException {
         var result = this.sectorsServices.create(sector);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -45,7 +47,7 @@ public class SectorsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Sector> update(@PathVariable("id") int id, @RequestBody Sector sector) {
+    public ResponseEntity<Sector> update(@PathVariable("id") int id, @RequestBody Sector sector) throws SQLException {
         var result = this.sectorsServices.findOne(id);
 
         if(result != null) {
@@ -62,7 +64,7 @@ public class SectorsController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Sector> delete(@PathVariable("id") int id) {
+    public ResponseEntity<Sector> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.sectorsServices.findOne(id);
 
         if(result != null) {

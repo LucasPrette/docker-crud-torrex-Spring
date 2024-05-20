@@ -23,14 +23,14 @@ import java.util.List;
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Dependent>> getAll(@RequestBody Dependent dependent) {
+    public ResponseEntity<List<Dependent>> getAll(@RequestBody Dependent dependent) throws SQLException {
         ArrayList<Dependent> dependents = this.dependentsServices.getAll();
 
         return new ResponseEntity<>(dependents, HttpStatus.OK);
     }
 
     @GetMapping(path="/{id}", produces = "application/json")
-    public String findOne(@PathVariable("id") int id) {
+    public String findOne(@PathVariable("id") int id) throws SQLException {
 
         var result = this.dependentsServices.findOne(id);
 
@@ -50,7 +50,7 @@ import java.util.List;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Dependent> update(@PathVariable("id") int id, @RequestBody Dependent dependent) {
+    public ResponseEntity<Dependent> update(@PathVariable("id") int id, @RequestBody Dependent dependent) throws SQLException {
         var updateDependent = this.dependentsServices.findOne(id);
 
         if(updateDependent != null) {
@@ -66,7 +66,7 @@ import java.util.List;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Dependent> delete(@PathVariable("id") int id) {
+    public ResponseEntity<Dependent> delete(@PathVariable("id") int id) throws SQLException{
         Dependent existingDependent = this.dependentsServices.findOne(id);
 
         if(existingDependent != null) {
