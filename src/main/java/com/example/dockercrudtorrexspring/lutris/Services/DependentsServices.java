@@ -37,6 +37,7 @@ public class DependentsServices {
         String consult = "SELECT * FROM dependent;";
         ResultSet result = statement.executeQuery(consult);
         while(result.next()) {
+            int id = result.getInt("id");
             String name = result.getString("name");
             String birth = result.getString("birth");
             int idEmp = result.getInt("idEmp");
@@ -63,7 +64,7 @@ public class DependentsServices {
         //TODO
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws SQLException{
         String sql = "DELETE FROM dependents WHERE id = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
