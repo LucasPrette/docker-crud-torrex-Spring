@@ -7,6 +7,8 @@ import org.springframework.http.*;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +18,19 @@ public class UnitsController {
 
     UnitsServices unitsServices;
 
-    public UnitsController() {
+    public UnitsController() throws NoSuchAlgorithmException {
         this.unitsServices = new UnitsServices();
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Unit>> getAll(@RequestBody Unit unit) {
+    public ResponseEntity<List<Unit>> getAll(@RequestBody Unit unit) throws SQLException {
         ArrayList<Unit> units = this.unitsServices.getAll();
 
         return new ResponseEntity<>(units, HttpStatus.OK);
     }
 
     @GetMapping(path ="/{id}", produces = "application/json")
-    public ResponseEntity<Unit> findOne(@PathVariable("id") int id) {
+    public ResponseEntity<Unit> findOne(@PathVariable("id") int id) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -36,7 +38,7 @@ public class UnitsController {
     }
 
     @PostMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Unit> create(@RequestBody Unit unit) {
+    public ResponseEntity<Unit> create(@RequestBody Unit unit) throws SQLException {
         var result = this.unitsServices.create(unit);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -45,7 +47,7 @@ public class UnitsController {
     }
 
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Unit> update(@PathVariable("id") int id, @RequestBody Unit unit) {
+    public ResponseEntity<Unit> update(@PathVariable("id") int id, @RequestBody Unit unit) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
         if(result != null) {
@@ -64,7 +66,7 @@ public class UnitsController {
     }
 
 @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Unit> delete(@PathVariable("id") int id) {
+    public ResponseEntity<Unit> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
         if(result != null) {
