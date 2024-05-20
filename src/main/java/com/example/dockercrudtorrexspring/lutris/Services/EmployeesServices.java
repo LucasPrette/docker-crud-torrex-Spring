@@ -21,12 +21,12 @@ public class EmployeesServices {
 
     public Employee create(Employee employee) throws SQLException {
         //TODO: save all atributes
-        String sql = "INSERT INTO employee () VALUES (?,?,?,?);";
+        String sql = "INSERT INTO employee (name, date, idSector, idUnit) VALUES (?,?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, employee.getName());
-        stm.setString();
-        stm.setString();
-        stm.setString();
+        stm.setString(2, employee.getDate());
+        stm.setInt(3, employee.getIdSector());
+        stm.setInt(4, employee.getIdUnit());
 
         int rowsInserted = stm.executeUpdate();
 
@@ -34,6 +34,7 @@ public class EmployeesServices {
             System.out.println("Employee successfully inserted...");
             return employee;
         }
+        return null;
     }
 
     public ArrayList<Employee> getAll() throws SQLException{
