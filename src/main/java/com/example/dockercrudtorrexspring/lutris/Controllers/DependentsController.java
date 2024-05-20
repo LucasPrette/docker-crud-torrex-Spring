@@ -3,8 +3,6 @@ package com.example.dockercrudtorrexspring.lutris.Controllers;
 import com.example.dockercrudtorrexspring.lutris.Entities.Dependent;
 import com.example.dockercrudtorrexspring.lutris.Services.DependentsServices;
 import org.springframework.http.*;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -30,14 +28,11 @@ import java.util.List;
     }
 
     @GetMapping(path="/{id}", produces = "application/json")
-    public String findOne(@PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<Dependent> findOne(@PathVariable("id") int id) throws SQLException {
 
         var result = this.dependentsServices.findOne(id);
 
-        System.out.println(id);
-        // pegar "id" como parametro na url
-
-        return String.valueOf(new ResponseEntity<>(HttpStatus.OK));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(produces = "application/json")
@@ -45,36 +40,37 @@ import java.util.List;
         var result = this.dependentsServices.create(dependent);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
-
-        // pegar todos os campos do body da resquisicao (JSON)
     }
 
+    // TODO: verificar tipo do retorno (retornar somente http status)
     @PutMapping("/{id}")
     public ResponseEntity<Dependent> update(@PathVariable("id") int id, @RequestBody Dependent dependent) throws SQLException {
         var updateDependent = this.dependentsServices.findOne(id);
 
-        if(updateDependent != null) {
-            updateDependent.setName(updateDependent.getName());
-            updateDependent.setBirth(updateDependent.getBirth());
-            updateDependent.setIdEmployee(updateDependent.getIdEmployee());
-
-            dependentsServices.update(updateDependent);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if(updateDependent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+    
+        updateDependent.setName(updateDependent.getName());
+        updateDependent.setBirth(updateDependent.getBirth());
+        updateDependent.setIdEmployee(updateDependent.getIdEmployee());
+
+        dependentsServices.update(updateDependent);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);    
     }
 
+    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping("/{id}")
     public ResponseEntity<Dependent> delete(@PathVariable("id") int id) throws SQLException{
         Dependent existingDependent = this.dependentsServices.findOne(id);
 
         if(existingDependent != null) {
-            this.dependentsServices.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
 
-        //TODO find how to return no content response entity
+        this.dependentsServices.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

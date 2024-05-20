@@ -3,8 +3,6 @@ package com.example.dockercrudtorrexspring.lutris.Controllers;
 import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Services.EmployeesServices;
 import org.springframework.http.*;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -34,8 +32,6 @@ public class EmployeeController {
         var result = this.employeesServices.findOne(id);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
-
-        // pegar "id" como parametro na url
     }
 
     @PostMapping(produces = "application/json")
@@ -43,40 +39,38 @@ public class EmployeeController {
         var result = this.employeesServices.create(employee);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
-        // pegar todos os campos do body da resuisicao (JSON)
     }
 
+    // TODO: verificar tipo do retorno (retornar somente http status)
     @PutMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Employee> update(@PathVariable("id") int id, @RequestBody Employee employee) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
-        if(result != null) {
-            result.setName(result.getDate());
-            result.setDate(result.getDate());
-            result.setIdSector(result.getIdSector());
-            result.setIdUnit(result.getIdUnit());
-
-            this.employeesServices.update(result);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if(result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
 
-        // pegar "ID" como parametro na url
-        // pegar os campos do body da requisicao (JSON)
+        result.setName(result.getDate());
+        result.setDate(result.getDate());
+        result.setIdSector(result.getIdSector());
+        result.setIdUnit(result.getIdUnit());
+
+        this.employeesServices.update(result);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Employee> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
-        if(result != null) {
-            this.employeesServices.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if(result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.notFound().build();
-
-        // pegar "id" como parametro na URL
+        this.employeesServices.delete(id);
+        
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
