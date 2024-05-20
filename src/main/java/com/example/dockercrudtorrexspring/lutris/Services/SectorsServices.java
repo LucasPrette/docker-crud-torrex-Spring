@@ -20,7 +20,7 @@ public class SectorsServices {
     }
 
     public Sector create(Sector sector) throws SQLException {
-        String sql = "INSERT INTO sectors (name, launchDate) VALUES (?, ?);";
+        String sql = "insert into sectors (nameSector, launchDate) VALUES (?, ?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, sector.getName());
         stm.setString(2, sector.getLaunchDate());

@@ -19,35 +19,50 @@ public class UnitsServices {
     }
 
     public Unit create(Unit unit) throws SQLException {
-        String sql = "INSERT INTO units (name, lauchDate) VALUES (?, ?);";
+//        System.out.println(unit);
+//        System.out.println(unit.getName());
+//        System.out.println(unit.getLaunchDate());
+        String sql = "insert into units (city, launchDate) values (?, ?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, unit.getName());
         stm.setString(2, unit.getLaunchDate());
-        stm.executeUpdate();
+        int rowsInsert = stm.executeUpdate();
 
-        return null;
+        if(rowsInsert > 0) {
+            System.out.println("Successfully inserted");
+        }
+
+        return unit;
     }
 
     public ArrayList<Unit> getAll() throws SQLException {
         ArrayList<Unit> units = new ArrayList<>();
+
         String sql = "SELECT * FROM units";
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
+
         while(resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
+            int id = resultSet.getInt("idUnit");
+            String name = resultSet.getString("city");
             String launchDate = resultSet.getString("launchDate");
 
             units.add(new Unit(id, name, launchDate));
         }
-        return null;
+        return units;
     }
 
     public Unit findOne(int id) throws SQLException {
-        String sql = "SELECT * FROM units WHERE id = " + id;
+        String sql = "SELECT * FROM units WHERE idUnit = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
+        while(resultSet.next()){
+            int idR = resultSet.getInt("idUnit");
+            String name = resultSet.getString("city");
+            String launchDate = resultSet.getString("launchDate");
+            return new Unit(idR, name, launchDate);
+        }
         return null;
     }
 
@@ -59,10 +74,13 @@ public class UnitsServices {
     public Unit delete(int id) throws SQLException {
         //TODO validate unit
 
-        String sql = "DELETE FROM units WHERE id = " + id;
+        String sql = "DELETE FROM units WHERE idUnit = " + id;
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
-        stm.executeUpdate();
+        int rows = stm.executeUpdate();
 
+        if (rows > 0) {
+            System.out.println("deleted");
+        }
         return null;
     }
 }

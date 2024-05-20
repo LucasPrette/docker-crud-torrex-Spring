@@ -21,6 +21,11 @@ public class Unit {
         this.launchDate = launchDate;
     }
 
+    public Unit(String name, String launchDate) {
+        this.name = name;
+        this.launchDate = launchDate;
+    }
+
     public int getId() {
         return this.id;
     }

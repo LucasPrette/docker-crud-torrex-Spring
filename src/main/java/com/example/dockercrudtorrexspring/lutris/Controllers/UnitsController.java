@@ -5,15 +5,17 @@ import com.example.dockercrudtorrexspring.lutris.Services.UnitsServices;
 import org.springframework.http.*;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/units")
+@RequestMapping(path ="/units")
 public class UnitsController {
 
     UnitsServices unitsServices;
@@ -29,16 +31,19 @@ public class UnitsController {
         return new ResponseEntity<>(units, HttpStatus.OK);
     }
 
+
     @GetMapping(path ="/{id}", produces = "application/json")
     public ResponseEntity<Unit> findOne(@PathVariable("id") int id) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
         // pegar "id" como parametro na url
     }
 
-    @PostMapping(path = "/{id}", produces = "application/json")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<Unit> create(@RequestBody Unit unit) throws SQLException {
+        System.out.println(unit);
+        System.out.println(unit.getName());
         var result = this.unitsServices.create(unit);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -65,7 +70,7 @@ public class UnitsController {
         // pegar os campos do body da requisicao (JSON)
     }
 
-@DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Unit> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.unitsServices.findOne(id);
 

@@ -15,7 +15,7 @@ public class DependentsServices {
     }
 
     public Dependent create(Dependent dependent) throws SQLException {
-        String sql = "INSERT INTO dependent (name, birth, idEmp) VALUES (?,?,?);";
+        String sql = "insert into dependent (nameDependent, birth, idEmployee) VALUES (?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1,dependent.getName());
         stm.setString(2, dependent.getBirth());
@@ -65,7 +65,7 @@ public class DependentsServices {
     }
 
     public void delete(int id) throws SQLException{
-        String sql = "DELETE FROM dependents WHERE id = " + id;
+        String sql = "DELETE FROM dependent WHERE id = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
     }

@@ -21,7 +21,7 @@ public class EmployeesServices {
 
     public Employee create(Employee employee) throws SQLException {
         //TODO: save all atributes
-        String sql = "INSERT INTO employee (name, date, idSector, idUnit) VALUES (?,?,?,?);";
+        String sql = "insert into employees (nameEmployee, birth, idSector, idUnit) (?,?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, employee.getName());
         stm.setString(2, employee.getDate());
