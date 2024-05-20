@@ -19,19 +19,18 @@ public class UnitsServices {
     }
 
     public Unit create(Unit unit) throws SQLException {
-//        System.out.println(unit);
-//        System.out.println(unit.getName());
-//        System.out.println(unit.getLaunchDate());
         String sql = "insert into units (city, launchDate) values (?, ?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, unit.getName());
         stm.setString(2, unit.getLaunchDate());
+
         int rowsInsert = stm.executeUpdate();
 
         if(rowsInsert > 0) {
             System.out.println("Successfully inserted");
         }
 
+        // TODO: return unit with complete data populated (id, createdAt, ...)
         return unit;
     }
 
@@ -49,6 +48,7 @@ public class UnitsServices {
 
             units.add(new Unit(id, name, launchDate));
         }
+
         return units;
     }
 
@@ -63,24 +63,18 @@ public class UnitsServices {
             String launchDate = resultSet.getString("launchDate");
             return new Unit(idR, name, launchDate);
         }
+
         return null;
     }
 
     public Unit update(Unit unit) {
-        //TODO
+        //TODO: implement it
         return null;
     }
 
-    public Unit delete(int id) throws SQLException {
-        //TODO validate unit
-
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM units WHERE idUnit = " + id;
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
-        int rows = stm.executeUpdate();
-
-        if (rows > 0) {
-            System.out.println("deleted");
-        }
-        return null;
+        stm.executeUpdate();
     }
 }

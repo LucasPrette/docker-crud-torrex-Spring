@@ -23,6 +23,7 @@ public class DependentsServices {
 
         int rowsInserted = stm.executeUpdate();
 
+        // TODO: return dependent with complete data populated (id, createdAt, ...)
         if(rowsInserted > 0) {
             System.out.println("Dependent Successfully Inserted");
             return dependent;
@@ -52,6 +53,7 @@ public class DependentsServices {
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
 
+        // TODO: return `null` when dependent not exists
         int resultId = resultSet.getInt("id");
         String resultName = resultSet.getString("name");
         String resultBirth = resultSet.getString("birth");
@@ -61,12 +63,12 @@ public class DependentsServices {
     }
 
     public void update(Dependent dependent) {
-        //TODO
+        //TODO: finish it
     }
 
     public void delete(int id) throws SQLException{
         String sql = "DELETE FROM dependent WHERE id = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        statement.executeQuery(sql);
     }
 }
