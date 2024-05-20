@@ -46,20 +46,26 @@ public class DependentsServices {
     }
 
     public Dependent findOne(int id) throws SQLException{
-        String sql = "SELECT id, name, birth, idEmp FROM dependent WHERE id = ?";
+        String sql = "SELECT id, name, birth, idEmp FROM dependent WHERE id = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        //TODO: save all the atributes
+        resultSet.next();
 
+        int resultId = resultSet.getInt("id");
+        String resultName = resultSet.getString("name");
+        String resultBirth = resultSet.getString("birth");
+        int resultIdEmp = resultSet.getInt("idEmp");
 
-        return null;
+        return new Dependent(resultId, resultName,resultBirth,resultIdEmp);
     }
 
     public void update(Dependent dependent) {
-
+        //TODO
     }
 
     public void delete(int id) {
-
+        String sql = "DELETE FROM dependents WHERE id = " + id;
+        Statement statement = databaseRepository.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
     }
 }
