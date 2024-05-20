@@ -6,8 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-//TODO create username, password, urlStringConnection and others APIkeys necessary as .env
-
 public final class DatabaseRepository {
 
     private static DatabaseRepository instance;
@@ -27,9 +25,7 @@ public final class DatabaseRepository {
             .load();
 
     private DatabaseRepository() throws NoSuchAlgorithmException{
-
-        String ConnectionURL = dotenv.get("URL");
-        createConnection();
+        this.createConnection();
     }
 
     private Connection createConnection() throws NoSuchAlgorithmException {
@@ -39,7 +35,7 @@ public final class DatabaseRepository {
         try{
             //provide java database driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String ConnectionURL = dotenv.get("URL");
+            String ConnectionURL = dotenv.get("DATABASE_URL");
             connection = DriverManager.getConnection(ConnectionURL);
 
             setConnection(connection);
@@ -59,11 +55,7 @@ public final class DatabaseRepository {
         if(instance == null) {
             instance = new DatabaseRepository();
         }
+
         return instance;
     }
-
-
-    //TODO ver como criar conexao com banco de dado(sqlServer)
-    // salvar os dados da conexao em .env
-    // Extra: https://refactoring.guru/design-patterns/singleton
 }
