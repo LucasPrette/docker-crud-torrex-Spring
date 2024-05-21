@@ -3,7 +3,6 @@ package com.example.dockercrudtorrexspring.lutris.Services;
 import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Repositories.DatabaseRepository;
 
-import javax.swing.plaf.nimbus.State;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +19,6 @@ public class EmployeesServices {
 
 
     public Employee create(Employee employee) throws SQLException {
-        //TODO: save all atributes
         String sql = "insert into employees (nameEmployee, birth, idSector, idUnit) (?,?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, employee.getName());
@@ -30,6 +28,7 @@ public class EmployeesServices {
 
         int rowsInserted = stm.executeUpdate();
 
+        // TODO: return unit with complete data populated (id, createdAt, ...)
         if(rowsInserted > 0) {
             System.out.println("Employee successfully inserted...");
             return employee;
@@ -38,19 +37,19 @@ public class EmployeesServices {
     }
 
     public ArrayList<Employee> getAll() throws SQLException{
-        //TODO save all atributes
         ArrayList<Employee> employees = new ArrayList<>();
 
         String sql = "SELECT * FROM employees";
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
+        // TODO: finish it
         while(resultSet.next()) {
-
             employees.add(new Employee());
             return employees;
         }
 
+        // TODO: ensure to always return an `ArrayList`
         return null;
     }
 
@@ -59,23 +58,21 @@ public class EmployeesServices {
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-        //TODO save and return all data
+        //TODO: save and return all data
 
 
         return null;
     }
 
     public Employee update(Employee employee) {
-        // TODO
+        // TODO: finish it
         return null;
     }
 
-    public Employee delete(int id) throws SQLException{
-        // TODO validate if employee exists
+    public void delete(int id) throws SQLException{
         String sql = "DELETE FROM employees WHERE id = " + id;
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        
         stm.executeUpdate();
-
-        return null;
     }
 }

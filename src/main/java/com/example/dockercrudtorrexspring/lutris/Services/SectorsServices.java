@@ -26,28 +26,31 @@ public class SectorsServices {
         stm.setString(2, sector.getLaunchDate());
         stm.executeUpdate();
 
+        // TODO: return sector with complete data populated (id, createdAt, ...)
         return sector;
     }
 
     public ArrayList<Sector> getAll() throws SQLException{
-        //TODO save into the array
-        // FIND HOW TO GET THE ID
         ArrayList<Sector> sectors = new ArrayList<>();
+
         String sql = "SELECT * FROM sectors";
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
+        // TODO: finish it
         while(resultSet.next()) {
             String name = resultSet.getString("name");
             String launchDate = resultSet.getString("launchDate");
 
             sectors.add(new Sector());
         }
+
+        // TODO: ensure to always return an `ArrayList`
         return null;
     }
 
     public Sector findOne(int id) throws SQLException {
-        // TODO: create validate if sector exists
+        // TODO: return `Sector` when finded, return null otherwise
         String sql = "SELECT * FROM sectors WHERE id =" + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -57,16 +60,13 @@ public class SectorsServices {
     }
 
     public void update(Sector sector) {
-        // TODO
-
-
+        // TODO: implement it
     }
 
     public void delete(int id) throws SQLException{
-        // TODO: validate if sector exists
         String sql = "DELETE FROM sectors WHERE id =" + id;
         Statement statement = databaseRepository.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        statement.executeQuery(sql);
     }
 
 }
