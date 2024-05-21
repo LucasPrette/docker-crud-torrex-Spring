@@ -42,16 +42,14 @@ public class SectorsController {
     }
 
     // TODO: verificar tipo do retorno (retornar somente http status)
-    @PutMapping("/{id}")
-    public ResponseEntity<Sector> update(@PathVariable("id") int id, @RequestBody Sector sector) throws SQLException {
+    @PutMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Sector sector) throws SQLException {
         var result = this.sectorsServices.findOne(id);
 
         if(result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        result.setName(result.getName());
-        result.setLaunchDate(result.getLaunchDate());
+        result.setName(sector.getName());
 
         this.sectorsServices.update(result);
 
@@ -60,7 +58,7 @@ public class SectorsController {
 
     // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Sector> delete(@PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.sectorsServices.findOne(id);
 
         if(result == null) {

@@ -20,13 +20,16 @@ public class SectorsServices {
     }
 
     public Sector create(Sector sector) throws SQLException {
-        String sql = "insert into sectors (nameSector, launchDate) VALUES (?, ?);";
+        String sql = "insert into sectors (nameSector, launchDate) VALUES (?, GETDATE());";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, sector.getName());
-        stm.setString(2, sector.getLaunchDate());
-        stm.executeUpdate();
 
-        // TODO: return sector with complete data populated (id, createdAt, ...)
+        int rowsInserted = stm.executeUpdate();
+
+        if(rowsInserted > 0) {
+            return new Sector(sector.getId(), sector.getName(), sector.getLaunchDate());
+        }
+
         return sector;
     }
 
@@ -37,36 +40,42 @@ public class SectorsServices {
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        // TODO: finish it
         while(resultSet.next()) {
-            String name = resultSet.getString("name");
+            int id = resultSet.getInt("idSector");
+            String name = resultSet.getString("nameSector");
             String launchDate = resultSet.getString("launchDate");
 
-            sectors.add(new Sector());
+            sectors.add(new Sector(id, name, launchDate));
         }
 
-        // TODO: ensure to always return an `ArrayList`
-        return null;
+        return sectors;
     }
 
     public Sector findOne(int id) throws SQLException {
-        // TODO: return `Sector` when finded, return null otherwise
-        String sql = "SELECT * FROM sectors WHERE id =" + id;
+        String sql = "SELECT * FROM sectors WHERE idSector =" + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
 
-        return null;
+        if(!resultSet.next()){
+            return null;
+        }
+        int idU = resultSet.getInt("idSector");
+        String name = resultSet.getString("nameSector");
+        String launchDate = resultSet.getString("launchDate");
+        return new Sector(idU, name, launchDate);
+
     }
 
-    public void update(Sector sector) {
-        // TODO: implement it
+    public void update(Sector sector) throws SQLException {
+        String sql = "UPDATE sectors SET nameSector = " + " '" + sector.getName() + "' " +" WHERE idSector = " + sector.getId();
+        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        stm.executeUpdate();
     }
 
     public void delete(int id) throws SQLException{
-        String sql = "DELETE FROM sectors WHERE id =" + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
-        statement.executeQuery(sql);
+        String sql = "DELETE FROM sectors WHERE idSector = " + id;
+        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        stm.executeUpdate();
     }
 
 }

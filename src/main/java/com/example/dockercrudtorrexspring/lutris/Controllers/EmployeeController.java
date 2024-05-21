@@ -43,17 +43,17 @@ public class EmployeeController {
 
     // TODO: verificar tipo do retorno (retornar somente http status)
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Employee> update(@PathVariable("id") int id, @RequestBody Employee employee) throws SQLException {
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Employee employee) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
         if(result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        result.setName(result.getDate());
-        result.setDate(result.getDate());
-        result.setIdSector(result.getIdSector());
-        result.setIdUnit(result.getIdUnit());
+        result.setName(employee.getName());
+        result.setDate(employee.getDate());
+        result.setIdSector(employee.getIdSector());
+        result.setIdUnit(employee.getIdUnit());
 
         this.employeesServices.update(result);
 
@@ -62,7 +62,7 @@ public class EmployeeController {
 
     // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Employee> delete(@PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.employeesServices.findOne(id);
 
         if(result == null) {

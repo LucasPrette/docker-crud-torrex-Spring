@@ -15,7 +15,7 @@ public class DependentsServices {
     }
 
     public Dependent create(Dependent dependent) throws SQLException {
-        String sql = "insert into dependent (nameDependent, birth, idEmployee) VALUES (?,?,?);";
+        String sql = "INSERT INTO dependents (nameDependent, birth, idEmployee) VALUES (?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1,dependent.getName());
         stm.setString(2, dependent.getBirth());
@@ -23,10 +23,9 @@ public class DependentsServices {
 
         int rowsInserted = stm.executeUpdate();
 
-        // TODO: return dependent with complete data populated (id, createdAt, ...)
         if(rowsInserted > 0) {
             System.out.println("Dependent Successfully Inserted");
-            return dependent;
+            return new Dependent(dependent.getId(), dependent.getName(), dependent.getBirth(), dependent.getIdEmployee());
         }
         return null;
     }
@@ -35,40 +34,48 @@ public class DependentsServices {
         ArrayList<Dependent> dependents = new ArrayList<>();
 
         Statement statement = databaseRepository.getConnection().createStatement();
-        String consult = "SELECT * FROM dependent;";
+        String consult = "SELECT * FROM dependents;";
         ResultSet result = statement.executeQuery(consult);
+
         while(result.next()) {
-            int id = result.getInt("id");
-            String name = result.getString("name");
+            int id = result.getInt("idDependent");
+            String name = result.getString("nameDependent");
             String birth = result.getString("birth");
-            int idEmp = result.getInt("idEmp");
+            int idEmp = result.getInt("idEmployee");
             dependents.add(new Dependent(id, name, birth, idEmp));
         }
         return dependents;
     }
 
     public Dependent findOne(int id) throws SQLException{
-        String sql = "SELECT id, name, birth, idEmp FROM dependent WHERE id = " + id;
+        String sql = "SELECT * FROM dependents WHERE idDependent = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
 
-        // TODO: return `null` when dependent not exists
-        int resultId = resultSet.getInt("id");
-        String resultName = resultSet.getString("name");
+        if (!resultSet.next()) {
+            return null;
+        }
+        int resultId = resultSet.getInt("idDependent");
+        String resultName = resultSet.getString("nameDependent");
         String resultBirth = resultSet.getString("birth");
-        int resultIdEmp = resultSet.getInt("idEmp");
+        int resultIdEmp = resultSet.getInt("idEmployee");
 
         return new Dependent(resultId, resultName,resultBirth,resultIdEmp);
     }
 
-    public void update(Dependent dependent) {
-        //TODO: finish it
+    public void update(Dependent dependent) throws SQLException {
+        String sql ="UPDATE dependents SET nameDependent = ?, birth = ?, idEmployee = ? WHERE idDependent = ?";
+        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        stm.setString(1, dependent.getName());
+        stm.setString(2, dependent.getBirth());
+        stm.setInt(3, dependent.getIdEmployee());
+        stm.setInt(4, dependent.getId());
+        stm.executeUpdate();
     }
 
     public void delete(int id) throws SQLException{
-        String sql = "DELETE FROM dependent WHERE id = " + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
-        statement.executeQuery(sql);
+        String sql = "DELETE FROM dependents WHERE idDependent = " + id;
+        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        stm.executeUpdate();
     }
 }

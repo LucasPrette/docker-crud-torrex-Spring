@@ -30,6 +30,7 @@ public class UnitsController {
 
     @GetMapping(path ="/{id}", produces = "application/json")
     public ResponseEntity<Unit> findOne(@PathVariable("id") int id) throws SQLException {
+
         var result = this.unitsServices.findOne(id);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -42,26 +43,23 @@ public class UnitsController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
+
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Unit> update(@PathVariable("id") int id, @RequestBody Unit unit) throws SQLException {
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Unit unit) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
         if(result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        result.setName(unit.getName());
 
-        result.setName(result.getName());
-        result.setLaunchDate(result.getLaunchDate());
-
-        unitsServices.update(result);
+        this.unitsServices.update(result);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Unit> delete(@PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.unitsServices.findOne(id);
 
         if(result == null) {

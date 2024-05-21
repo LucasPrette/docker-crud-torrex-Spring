@@ -19,7 +19,7 @@ public class EmployeesServices {
 
 
     public Employee create(Employee employee) throws SQLException {
-        String sql = "insert into employees (nameEmployee, birth, idSector, idUnit) (?,?,?,?);";
+        String sql = "INSERT INTO employees (nameEmployee, birth, idSector, idUnit) VALUES (?,?,?,?);";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, employee.getName());
         stm.setString(2, employee.getDate());
@@ -28,10 +28,10 @@ public class EmployeesServices {
 
         int rowsInserted = stm.executeUpdate();
 
-        // TODO: return unit with complete data populated (id, createdAt, ...)
         if(rowsInserted > 0) {
             System.out.println("Employee successfully inserted...");
-            return employee;
+            return new Employee(employee.getId(), employee.getName(), employee.getDate(),
+                    employee.getIdSector(), employee.getIdUnit());
         }
         return null;
     }
@@ -43,34 +43,49 @@ public class EmployeesServices {
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        // TODO: finish it
         while(resultSet.next()) {
-            employees.add(new Employee());
-            return employees;
+            int idE = resultSet.getInt("idEmployee");
+            String name = resultSet.getString("nameEmployee");
+            String birth = resultSet.getString("birth");
+            int idSector = resultSet.getInt("idSector");
+            int idUnit = resultSet.getInt("idUnit");
+
+            employees.add(new Employee(idE, name, birth, idSector, idUnit));
         }
 
-        // TODO: ensure to always return an `ArrayList`
-        return null;
+        return employees;
     }
 
     public Employee findOne(int id) throws SQLException{
-        String sql = "SELECT * FROM employees WHERE id = " + id;
+        String sql = "SELECT * FROM employees WHERE idEmployee = " + id;
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        resultSet.next();
-        //TODO: save and return all data
 
+        if(!resultSet.next()) {
+            return null;
+        }
+        int idE = resultSet.getInt("idEmployee");
+        String name = resultSet.getString("nameEmployee");
+        String birth = resultSet.getString("birth");
+        int idSector = resultSet.getInt("idSector");
+        int idUnit = resultSet.getInt("idUnit");
 
-        return null;
+        return new Employee(idE, name, birth, idSector, idUnit);
     }
 
-    public Employee update(Employee employee) {
-        // TODO: finish it
-        return null;
+    public void update(Employee employee) throws SQLException {
+        String sql = " UPDATE employees SET nameEmployee = "+"'"+ employee.getName() +"'" +", idUnit = ?, idSector = ? WHERE idEmployee = ? ";
+        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        stm.setInt(1, employee.getIdSector());
+        stm.setInt(2, employee.getIdUnit());
+        stm.setInt(3, employee.getId());
+
+        stm.executeUpdate();
+
     }
 
     public void delete(int id) throws SQLException{
-        String sql = "DELETE FROM employees WHERE id = " + id;
+        String sql = "DELETE FROM employees WHERE idEmployee = " + id;
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         
         stm.executeUpdate();

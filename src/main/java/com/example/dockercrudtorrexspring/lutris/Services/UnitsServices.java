@@ -19,15 +19,15 @@ public class UnitsServices {
     }
 
     public Unit create(Unit unit) throws SQLException {
-        String sql = "insert into units (city, launchDate) values (?, ?);";
+        String sql = "insert into units (city, launchDate) values (?, GETDATE());";
         PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
         stm.setString(1, unit.getName());
-        stm.setString(2, unit.getLaunchDate());
 
         int rowsInsert = stm.executeUpdate();
 
         if(rowsInsert > 0) {
             System.out.println("Successfully inserted");
+            return new Unit(unit.getId(), unit.getName(), unit.getLaunchDate());
         }
 
         // TODO: return unit with complete data populated (id, createdAt, ...)
@@ -57,19 +57,20 @@ public class UnitsServices {
         Statement statement = databaseRepository.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        while(resultSet.next()){
-            int idR = resultSet.getInt("idUnit");
-            String name = resultSet.getString("city");
-            String launchDate = resultSet.getString("launchDate");
-            return new Unit(idR, name, launchDate);
+        if(!resultSet.next()) {
+            return null;
         }
-
-        return null;
+        int idR = resultSet.getInt("idUnit");
+        String name = resultSet.getString("city");
+        String launchDate = resultSet.getString("launchDate");
+        return new Unit(idR, name, launchDate);
     }
 
-    public Unit update(Unit unit) {
-        //TODO: implement it
-        return null;
+
+    public void update(Unit unit) throws SQLException{
+        String sql = "UPDATE units SET city = " + " ' " + unit.getName() +" ' " + "  WHERE idUnit = " + unit.getId() ;
+        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        stm.executeUpdate();
     }
 
     public void delete(int id) throws SQLException {
